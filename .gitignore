@@ -32,3 +32,6 @@ models/local/
 
 # Secrets
 *.key
+
+# Workspace
+workspace/
