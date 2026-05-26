@@ -11,6 +11,7 @@ logs/
 
 # Memory Databases
 memory/chroma/
+memory/sqlite/
 
 # OS Files
 .DS_Store
@@ -32,3 +33,6 @@ models/local/
 
 # Secrets
 *.key
+
+# Workspace
+workspace/
