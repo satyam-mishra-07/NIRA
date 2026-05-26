@@ -1,0 +1,22 @@
+[
+  {
+    "role": "user",
+    "content": "hello",
+    "timestamp": "2026-05-26T13:42:00.090366"
+  },
+  {
+    "role": "assistant",
+    "content": "Hey Satyam. Just finished debugging or still deep in code?",
+    "timestamp": "2026-05-26T13:42:00.092436"
+  },
+  {
+    "role": "user",
+    "content": "hello",
+    "timestamp": "2026-05-26T13:42:47.262070"
+  },
+  {
+    "role": "assistant",
+    "content": "Hey Satyam. Just noticed the time\u2014almost 2pm. Lunch break or still in the zone?",
+    "timestamp": "2026-05-26T13:42:47.263257"
+  }
+]
