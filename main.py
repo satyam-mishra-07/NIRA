@@ -20,6 +20,7 @@ from cognition.mood.emotional_memory import MoodEmotionalMemory
 from memory.summaries.summary_memory import SummaryMemory
 from memory.conversation.conversation_store import ConversationStore
 from personality.personality_engine import PersonalityEngine
+from cognition.habits.reinforcement import HabitReinforcement
 from providers.llm.model_router import ModelRouter
 from security.validator import InputValidator
 from security.guardrails import Guardrails
@@ -53,6 +54,7 @@ def main():
     personality = PersonalityEngine()
 
     confidence_engine = ConfidenceEngine()
+    habit_reinforcement = HabitReinforcement(confidence_engine)
     pattern_detector = PatternDetector()
     model_router = ModelRouter()
 
@@ -79,7 +81,8 @@ def main():
         validator=validator,
         guardrails=guardrails,
         memory_reflection=memory_reflection,
-        mood_emotional_memory=mood_emotional_memory
+        mood_emotional_memory=mood_emotional_memory,
+        habit_reinforcement=habit_reinforcement,
     )
 
     print("\nNIRA is online. Type 'exit' to quit.\n")
