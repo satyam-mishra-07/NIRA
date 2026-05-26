@@ -5,6 +5,9 @@ class CognitiveStateManager:
         self.current_intent = {"intent": "casual_chat", "confidence": 0.0, "sub_intent": None}
         self.interaction_count = 0
 
+    def seed_habits_from_store(self, habits: list):
+        self.active_habits = habits
+
     def update_mood(self, mood_result: dict):
         self.current_mood = mood_result
 

@@ -34,4 +34,4 @@ class RuntimeStateManager:
         return self._state == RuntimeState.PROCESSING
 
     def can_process(self):
-        return self._state in (RuntimeState.IDLE, RuntimeState.BOOTING)
+        return self._state == RuntimeState.IDLE

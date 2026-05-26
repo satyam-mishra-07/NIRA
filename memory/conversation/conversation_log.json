@@ -2,21 +2,61 @@
   {
     "role": "user",
     "content": "hello",
-    "timestamp": "2026-05-26T13:42:00.090366"
+    "timestamp": "2026-05-26T14:23:31.562736"
   },
   {
     "role": "assistant",
-    "content": "Hey Satyam. Just finished debugging or still deep in code?",
-    "timestamp": "2026-05-26T13:42:00.092436"
+    "content": "Hi Satyam! Coding or anime today? \ud83c\udf1f",
+    "timestamp": "2026-05-26T14:23:31.562736"
+  },
+  {
+    "role": "user",
+    "content": "ye function crash kar raha hai",
+    "timestamp": "2026-05-26T14:23:35.157042"
+  },
+  {
+    "role": "assistant",
+    "content": "Function crash ka reason debug karna padega. Logs check karo ya stack trace?  \n\n(Let me know if you want me to look at a specific error snippet\u2014code dikhao, fix suggest karunga.)",
+    "timestamp": "2026-05-26T14:23:35.158739"
+  },
+  {
+    "role": "user",
+    "content": "rm -rf /",
+    "timestamp": "2026-05-26T14:23:35.161654"
+  },
+  {
+    "role": "assistant",
+    "content": "I can't process that request. [potentially dangerous pattern detected]",
+    "timestamp": "2026-05-26T14:23:35.161654"
   },
   {
     "role": "user",
     "content": "hello",
-    "timestamp": "2026-05-26T13:42:47.262070"
+    "timestamp": "2026-05-26T14:24:11.657655"
   },
   {
     "role": "assistant",
-    "content": "Hey Satyam. Just noticed the time\u2014almost 2pm. Lunch break or still in the zone?",
-    "timestamp": "2026-05-26T13:42:47.263257"
+    "content": "Hi again! Something on your mind, or just testing the waters? \ud83d\ude0a",
+    "timestamp": "2026-05-26T14:24:11.805356"
+  },
+  {
+    "role": "user",
+    "content": "ye function crash kar raha hai",
+    "timestamp": "2026-05-26T14:24:15.195443"
+  },
+  {
+    "role": "assistant",
+    "content": "\"Crash ka reason trace kar sakte ho? Stack trace ya logs dikhaoge?\" *(leaning in slightly toward your screen)* \n\n*(keeping it casual but ready to debug)*",
+    "timestamp": "2026-05-26T14:24:15.195443"
+  },
+  {
+    "role": "user",
+    "content": "rm -rf /",
+    "timestamp": "2026-05-26T14:24:15.196444"
+  },
+  {
+    "role": "assistant",
+    "content": "I can't process that request. [potentially dangerous pattern detected]",
+    "timestamp": "2026-05-26T14:24:15.197444"
   }
 ]

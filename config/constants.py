@@ -27,18 +27,30 @@ CONVERSATION_MODEL_TRIGGERS = [
 ]
 
 MOOD_KEYWORDS = {
-    "frustrated": ["damn", "why isn't", "broken", "not working", "error", "bug", "annoying", "stupid", "wtf"],
-    "curious": ["how", "why", "what if", "wonder", "curious", "experiment", "try", "explore"],
-    "stressed": ["deadline", "overwhelmed", "too much", "running late", "behind", "stress", "urgent"],
-    "playful": ["lol", "haha", "😂", "😅", "fun", "joke", "just kidding", "lol"],
-    "focused": ["let's", "going to", "working on", "implement", "build", "create", "fix", "solve"],
-    "tired": ["tired", "exhausted", "sleepy", "long day", "burned out", "late"]
+    "frustrated": ["damn", "why isn't", "broken", "not working", "error", "bug",
+                    "annoying", "stupid", "wtf", "kaam nahi", "galat", "kya bakwas",
+                    "sahi nahi", "problem", "issue", "fail"],
+    "curious": ["how", "why", "what if", "wonder", "curious", "experiment",
+                "try", "explore", "kaise", "kya hai", "kyu", "ise kaise",
+                "kya hua", "batana", "samjhana"],
+    "stressed": ["deadline", "overwhelmed", "too much", "running late", "behind",
+                 "stress", "urgent", "time nahi", "bahut kaam", "pressure", "jaldi"],
+    "playful": ["lol", "haha", "😂", "😅", "fun", "joke", "just kidding",
+                "mazaak", "hasi", "cool", "nice"],
+    "focused": ["let's", "going to", "working on", "implement", "build",
+                "create", "fix", "solve", "karte hain", "karna hai", "focus"],
+    "tired": ["tired", "exhausted", "sleepy", "long day", "burned out",
+              "late", "thak gaya", "neend", "aaram", "break"],
 }
 
 HABIT_PATTERNS = {
-    "music_while_coding": ["music", "playlist", "song", "lofi", "instrumental"],
+    "music_while_coding": ["music", "playlist", "song", "lofi", "instrumental",
+                           "gaana", "music laga", "beat", "melody"],
     "late_night_work": [],
     "concise_preference": [],
-    "coding_assistance": ["function", "class", "code", "debug", "error", "implement"],
-    "casual_conversation": ["hey", "how are you", "what's up", "tell me", "think about"]
+    "coding_assistance": ["function", "class", "code", "debug", "error",
+                          "implement", "program", "fix karo", "code likho",
+                          "syntax", "compile", "terminal"],
+    "casual_conversation": ["hey", "how are you", "what's up", "tell me",
+                            "think about", "kaise ho", "kya chal raha"],
 }
