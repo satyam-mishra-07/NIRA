@@ -9,10 +9,22 @@ class HabitObserver:
         self.pattern_detector = pattern_detector
         self.pattern_keywords = HABIT_PATTERNS
         self.observation_count = 0
+        self._hinglish_map = {
+            "kar raha": " ", "karo": " do ", "likho": " write ",
+            "code": " code ", "gaana": " music ", "music": " music ",
+            "function": " function ", "error": " error ", "debug": " debug ",
+            "kaise ho": " how are you ", "kya chal raha": " what's up ",
+        }
+
+    def _normalize(self, text: str) -> str:
+        normalized = text.lower()
+        for hing, eng in sorted(self._hinglish_map.items(), key=lambda x: -len(x[0])):
+            normalized = normalized.replace(hing, eng)
+        return normalized
 
     def observe(self, message: str, context: dict = None) -> list:
         self.observation_count += 1
-        message_lower = message.lower()
+        target = self._normalize(message)
         hour = datetime.now().hour
         observations = []
 
@@ -26,7 +38,7 @@ class HabitObserver:
                         "evidence": f"active at {hour}:00",
                     })
             else:
-                matches = sum(1 for kw in keywords if kw in message_lower)
+                matches = sum(1 for kw in keywords if kw in target)
                 if matches > 0:
                     delta = self.confidence_engine.compute_delta(pattern, 0.05 * matches)
                     observations.append({

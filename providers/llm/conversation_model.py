@@ -1,10 +1,10 @@
 from providers.llm.openrouter_provider import get_openrouter
-from config.settings import PRIMARY_MODEL, REQUEST_TIMEOUT, DEBUG, STREAM_OUTPUT
+from config.settings import CONVERSATION_MODEL, REQUEST_TIMEOUT, DEBUG, STREAM_OUTPUT
 
 class ConversationModel:
     def __init__(self):
         self.client = get_openrouter()
-        self.model = PRIMARY_MODEL
+        self.model = CONVERSATION_MODEL
         self.timeout = REQUEST_TIMEOUT
 
     def generate(self, system_prompt: str, user_message: str, context: dict = None, stream: bool = False, stream_handler=None) -> str:

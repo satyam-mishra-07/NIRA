@@ -6,8 +6,10 @@ load_dotenv()
 # --- LLM ---
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "openrouter")
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
-PRIMARY_MODEL = os.getenv("PRIMARY_MODEL", "qwen/qwen3-32b")
-FALLBACK_MODEL = os.getenv("FALLBACK_MODEL", "deepseek/deepseek-chat-v3-0324")
+CONVERSATION_MODEL = os.getenv("CONVERSATION_MODEL") or os.getenv("PRIMARY_MODEL", "qwen/qwen3-32b")
+REASONING_MODEL = os.getenv("REASONING_MODEL") or os.getenv("FALLBACK_MODEL", "deepseek/deepseek-chat-v3-0324")
+PRIMARY_MODEL = CONVERSATION_MODEL
+FALLBACK_MODEL = REASONING_MODEL
 LOCAL_FALLBACK_MODEL = os.getenv("LOCAL_FALLBACK_MODEL", "phi3:mini")
 LLM_TIMEOUT = int(os.getenv("LLM_TIMEOUT", "60"))
 REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "30"))

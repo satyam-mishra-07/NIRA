@@ -6,8 +6,11 @@ from cognition.mood.analyzer import MoodAnalyzer
 from cognition.habits.observer import HabitObserver
 from cognition.habits.confidence_engine import ConfidenceEngine
 from cognition.habits.pattern_detector import PatternDetector
+from cognition.habits.habit_store import HabitStore
 from cognition.intent.predictor import IntentPredictor
 from cognition.intent.classifier import IntentClassifier
+from cognition.reflection.memory_reflection import MemoryReflection
+from cognition.reflection.summarizer import ConversationSummarizer
 from memory.short_term.short_term_memory import ShortTermMemory
 from memory.working.working_memory import WorkingMemory
 from memory.profile.profile_manager import ProfileManager
@@ -17,11 +20,21 @@ from memory.summaries.summary_memory import SummaryMemory
 from memory.conversation.conversation_store import ConversationStore
 from personality.personality_engine import PersonalityEngine
 from providers.llm.model_router import ModelRouter
-from config.settings import DEBUG
+from security.validator import InputValidator
+from security.guardrails import Guardrails
+from config.settings import DEBUG, STREAM_OUTPUT
+
+
+def safe_print(text: str, end: str = "\n", flush: bool = False):
+    try:
+        print(text, end=end, flush=flush)
+    except UnicodeEncodeError:
+        safe = text.encode("ascii", errors="replace").decode("ascii")
+        print(safe, end=end, flush=flush)
 
 
 def stream_token(token: str):
-    print(token, end="", flush=True)
+    safe_print(token, end="", flush=True)
 
 
 def main():
@@ -44,17 +57,26 @@ def main():
     mood_analyzer = MoodAnalyzer()
     habit_observer = HabitObserver(confidence_engine, pattern_detector)
     intent_predictor = IntentPredictor(IntentClassifier())
+    habit_store = HabitStore(habit_memory)
+    validator = InputValidator()
+    guardrails = Guardrails()
+    summarizer = ConversationSummarizer()
+    memory_reflection = MemoryReflection(summary_memory, summarizer)
 
     cognitive_loop = CognitiveLoop(
         state_manager=runtime.state,
         cognitive_state=runtime.cognitive_state,
         mood_analyzer=mood_analyzer,
         habit_observer=habit_observer,
+        habit_store=habit_store,
         intent_predictor=intent_predictor,
         model_router=model_router,
         short_term=short_term,
         working_memory=working_memory,
         personality=personality,
+        validator=validator,
+        guardrails=guardrails,
+        memory_reflection=memory_reflection,
     )
 
     print("\nNIRA is online. Type 'exit' to quit.\n")
@@ -70,18 +92,27 @@ def main():
             continue
 
         if user_input.lower() in ("exit", "quit"):
-            print("\nNIRA: See you later, Satyam.")
+            safe_print("\nNIRA: See you later, Satyam.")
             break
 
         profile.increment_interactions()
 
-        print("NIRA: ", end="", flush=True)
-        response = cognitive_loop.process(
-            user_input,
-            stream_handler=stream_token if DEBUG else None,
-        )
+        streaming = DEBUG and STREAM_OUTPUT
+        safe_print("NIRA: ", end="", flush=True)
+        try:
+            response = cognitive_loop.process(
+                user_input,
+                stream_handler=stream_token if streaming else None,
+            )
+        except Exception as e:
+            print(f"\n[error] {e}")
+            continue
+
         if response:
-            print()
+            if streaming:
+                safe_print("")
+            else:
+                safe_print(response)
             conversation_store.append("user", user_input)
             conversation_store.append("assistant", response)
 
