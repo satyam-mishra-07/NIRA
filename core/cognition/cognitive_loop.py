@@ -84,8 +84,6 @@ class CognitiveLoop:
 
         mood_result = self.mood_analyzer.analyze(user_input, context)
         self.cognitive_state.update_mood(mood_result)
-        mood_result = self.mood_analyzer.analyze(user_input, context)
-        self.cognitive_state.update_mood(mood_result)
         self.mood_emotional_memory.store_mood(mood_result)
 
         observations = self.habit_observer.observe(user_input, context)
