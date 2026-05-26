@@ -7,6 +7,7 @@ from cognition.habits.observer import HabitObserver
 from cognition.habits.habit_store import HabitStore
 from cognition.intent.predictor import IntentPredictor
 from cognition.reflection.memory_reflection import MemoryReflection
+from cognition.mood.emotional_memory import MoodEmotionalMemory
 from providers.llm.model_router import ModelRouter
 from memory.short_term.short_term_memory import ShortTermMemory
 from memory.working.working_memory import WorkingMemory
@@ -32,6 +33,7 @@ class CognitiveLoop:
         validator: InputValidator,
         guardrails: Guardrails,
         memory_reflection: MemoryReflection,
+        mood_emotional_memory: MoodEmotionalMemory,
     ):
         self.state_manager = state_manager
         self.cognitive_state = cognitive_state
@@ -46,6 +48,7 @@ class CognitiveLoop:
         self.validator = validator
         self.guardrails = guardrails
         self.memory_reflection = memory_reflection
+        self.mood_emotional_memory = mood_emotional_memory
         self.summarize_interval = 10
 
         self.context_manager = ContextManager(
@@ -77,6 +80,9 @@ class CognitiveLoop:
 
         mood_result = self.mood_analyzer.analyze(user_input, context)
         self.cognitive_state.update_mood(mood_result)
+        mood_result = self.mood_analyzer.analyze(user_input, context)
+        self.cognitive_state.update_mood(mood_result)
+        self.mood_emotional_memory.store_mood(mood_result)
 
         observations = self.habit_observer.observe(user_input, context)
         self.cognitive_state.update_habits(observations)

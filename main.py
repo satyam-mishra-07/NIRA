@@ -16,6 +16,7 @@ from memory.working.working_memory import WorkingMemory
 from memory.profile.profile_manager import ProfileManager
 from memory.habits.habit_memory import HabitMemory
 from memory.emotional.emotional_memory import EmotionalMemory
+from cognition.mood.emotional_memory import MoodEmotionalMemory
 from memory.summaries.summary_memory import SummaryMemory
 from memory.conversation.conversation_store import ConversationStore
 from personality.personality_engine import PersonalityEngine
@@ -46,6 +47,7 @@ def main():
     profile = ProfileManager()
     habit_memory = HabitMemory()
     emotional_memory = EmotionalMemory()
+    mood_emotional_memory = MoodEmotionalMemory(emotional_memory)
     summary_memory = SummaryMemory()
     conversation_store = ConversationStore()
     personality = PersonalityEngine()
@@ -77,6 +79,7 @@ def main():
         validator=validator,
         guardrails=guardrails,
         memory_reflection=memory_reflection,
+        mood_emotional_memory=mood_emotional_memory
     )
 
     print("\nNIRA is online. Type 'exit' to quit.\n")
