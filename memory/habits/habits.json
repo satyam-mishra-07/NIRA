@@ -1,15 +1,15 @@
 [
   {
     "habit": "coding_assistance",
-    "confidence": 0.03,
+    "confidence": 0.0375,
     "first_observed": null,
     "last_reinforced": "keyword matches: 1"
   },
   {
     "habit": "casual_conversation",
-    "confidence": 0.0375,
+    "confidence": 0.0525,
     "first_observed": null,
-    "last_reinforced": "keyword matches: 2"
+    "last_reinforced": "keyword matches: 1"
   },
   {
     "habit": "music_while_coding",

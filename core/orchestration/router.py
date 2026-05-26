@@ -10,25 +10,26 @@ class OrchestrationRouter:
         confidence = intent.get("confidence", 0.0)
         requires_reasoning = intent.get("requires_reasoning", False)
 
-        threshold = 0.5
+        threshold = 0.45
 
+        # fallback
         if confidence < threshold:
+            if requires_reasoning:
+                return "reasoning"
             return "casual_chat"
 
-        # Tool access checks
-        if intent_name == "browser_request":
-            if self.execution_context.browser_allowed:
-                return "browser_request"
+        # reasoning override
+        if requires_reasoning:
+            return "reasoning"
 
-        if intent_name == "tool_execution":
-            if self.execution_context.terminal_allowed:
-                return "tool_execution"
+        # tool routing
+        if intent_name == "browser_request":
+            return "browser_request"
 
         if intent_name == "file_operation":
             return "file_operation"
 
-        # Core cognition routing
-        if requires_reasoning:
-            return "reasoning"
+        if intent_name == "tool_execution":
+            return "tool_execution"
 
         return "casual_chat"

@@ -1,75 +1,131 @@
+import json
 import re
+
+from config.prompts import INTENT_CLASSIFICATION_PROMPT
+from providers.llm.openrouter_provider import OpenRouterClient
+
 
 class IntentClassifier:
     def __init__(self):
-        self.patterns = {
-            "coding_help": [
-                r"\b(code|debug|error|function|class|implement|bug|fix|compile|syntax|refactor)\b",
-                r"```", r"def |class |import ",
-            ],
+        self.llm = OpenRouterClient()
+
+        self.fast_patterns = {
             "file_operation": [
-                r"\b(create|delete|rename|move|copy|read|write|save|open|file|folder|directory)\b",
-                r"\.py|\.js|\.ts|\.txt|\.json|\.md",
+                r"\b(create|delete|rename|move|copy|folder|directory)\b",
             ],
             "browser_request": [
-                r"\b(search|google|browse|open website|look up|find|research|wikipedia|url)\b",
-            ],
-            "productivity": [
-                r"\b(plan|task|todo|schedule|remind|organize|project|deadline|goal|priority)\b",
-            ],
-            "system": [
-                r"\b(status|setting|config|update|version|restart|shutdown|what can you)\b",
+                r"\b(search|google|browse|look up|research)\b",
             ],
             "tool_execution": [
-                r"\b(run|execute|terminal|command|pip|npm|git|bash|shell)\b",
+                r"\b(run|execute|terminal|command|pip|npm|git)\b",
             ],
         }
-        self.casual_patterns = [
-            r"\b(hello|hi|hey|how are you|what's up|good morning|thanks|bye)\b",
-        ]
-        self._hinglish_map = {
-            "kar raha": " is ", "kar rahi": " is ", "nahi": " not ",
-            "kaam": " work ", "karo": " do ", "aa raha": " getting ",
-            "kya": " what ", "kyu": " why ", "kaise": " how ",
-            "ye": " this ", "vo": " that ", "mera": " my ",
-            "chahiye": " need ", "dikhao": " show ", "banao": " build ",
-            "karte hain": " let's ", "karna": " do ", "likho": " write ",
-            "padho": " read ", "kholo": " open ", "dhundo": " search ",
-            "batao": " tell ", "samjhao": " explain ",
-        }
 
-    def _normalize_hinglish(self, text: str) -> str:
-        normalized = text.lower()
-        for hing, eng in sorted(self._hinglish_map.items(), key=lambda x: -len(x[0])):
-            normalized = normalized.replace(hing, eng)
-        return normalized
-
-    def _classify_internal(self, text: str) -> dict:
+    def _fast_classify(self, text: str):
         scores = {}
-        for intent, patterns in self.patterns.items():
+
+        for intent, patterns in self.fast_patterns.items():
             score = 0
+
             for pattern in patterns:
-                if re.search(pattern, text):
+                if re.search(pattern, text, re.IGNORECASE):
                     score += 1
+
             if score > 0:
                 scores[intent] = score
 
-        casual_score = sum(1 for p in self.casual_patterns if re.search(p, text))
-
-        if not scores and casual_score > 0:
-            return {"intent": "casual_chat", "confidence": 0.6, "sub_intent": None}
         if not scores:
-            return {"intent": "casual_chat", "confidence": 0.3, "sub_intent": None}
+            return None
 
         best = max(scores, key=scores.get)
-        confidence = min(0.5 + (scores[best] / sum(scores.values())) * 0.4, 0.95)
-        return {"intent": best, "confidence": round(confidence, 2), "sub_intent": None}
 
-    def classify(self, message: str) -> dict:
-        original_result = self._classify_internal(message.lower())
-        normalized = self._normalize_hinglish(message)
-        if normalized != message.lower():
-            normalized_result = self._classify_internal(normalized)
-            if normalized_result["confidence"] > original_result["confidence"]:
-                return normalized_result
-        return original_result
+        return {
+            "intent": best,
+            "confidence": 0.75,
+            "requires_reasoning": False,
+            "reason": "Fast regex classification",
+        }
+
+    def classify(self, message: str, context: str = "") -> dict:
+        """
+        Hybrid classification:
+        1. Fast regex routing for simple actions
+        2. LLM cognition classification for reasoning
+        """
+
+        fast_result = self._fast_classify(message)
+
+        # ALWAYS use LLM for potentially cognitive requests
+        reasoning_keywords = [
+            "explain",
+            "compare",
+            "why",
+            "how",
+            "architecture",
+            "design",
+            "scale",
+            "memory",
+            "system",
+            "implement",
+            "reasoning",
+            "analyze",
+            "details",
+            "deep",
+        ]
+
+        needs_llm = any(
+            keyword in message.lower()
+            for keyword in reasoning_keywords
+        )
+
+        if fast_result and not needs_llm:
+            return fast_result
+
+        try:
+            prompt = INTENT_CLASSIFICATION_PROMPT.format(
+                message=message,
+                context=context,
+            )
+
+            response = self.llm.generate(
+                messages=[
+                    {
+                        "role": "system",
+                        "content": "Return ONLY valid JSON.",
+                    },
+                    {
+                        "role": "user",
+                        "content": prompt,
+                    },
+                ],
+                temperature=0.1,
+            )
+
+            cleaned = response.strip()
+
+            # remove markdown fences
+            cleaned = re.sub(r"```json|```", "", cleaned).strip()
+
+            # extract first json object safely
+            match = re.search(r"\{.*\}", cleaned, re.DOTALL)
+
+            if not match:
+                raise ValueError("No JSON found in model response")
+
+            json_text = match.group()
+
+            result = json.loads(json_text)
+
+            print("[intent_classifier]", result)
+
+            return result
+
+        except Exception as e:
+            print("[intent_classifier_error]", e)
+
+            return fast_result or {
+                "intent": "casual_chat",
+                "confidence": 0.3,
+                "requires_reasoning": False,
+                "reason": "Fallback classification",
+            }

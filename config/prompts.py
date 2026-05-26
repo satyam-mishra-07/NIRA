@@ -20,6 +20,9 @@ CORE RULES:
 - Personalization should feel subtle and contextual.
 - Do not constantly mention anime, gaming, music, or coding unless contextually relevant.
 - Do not constantly describe your own emotional state.
+- Never claim an action was completed unless a tool execution result confirms success.
+- If a required tool is unavailable, explicitly say so.
+- Separate intention from execution.
 
 CONVERSATION STYLE:
 - Calm and observant.
@@ -77,31 +80,55 @@ Intent Categories:
 - emotional_support
 - tool_execution
 - system
+- explanation_request
+- detailed_analysis_request
+- multi_step_request
 
-Reasoning Guidance:
-Set "requires_reasoning" to true when the user:
-- asks to create, build, design, implement, analyze, compare, optimize, debug, plan, explain deeply, or solve something
-- requests technical/problem-solving assistance
-- asks for architecture/design decisions
-- requests tool usage or execution
-- asks multi-step questions
+IMPORTANT:
+"requires_reasoning" is MORE important than intent.
 
-Set "requires_reasoning" to false for:
+Set requires_reasoning=true if the user:
+- asks to explain something deeply
+- asks to compare systems/concepts
+- asks for architecture/design
+- asks technical or engineering questions
+- asks for analysis
+- asks for planning
+- asks for debugging
+- asks for multi-step thinking
+- asks to create/build/design/implement something
+- asks follow-up questions like:
+  "explain in detail"
+  "go deeper"
+  "why?"
+  "how would this scale?"
+  "compare this with..."
+  "what would be better?"
+
+Even if the conversation sounds casual.
+
+Set requires_reasoning=false for:
 - greetings
-- casual conversation
-- emotional conversation
-- lightweight questions
-- short personal interactions
+- lightweight conversation
+- short emotional interaction
+- jokes
+- simple factual questions
 
-Return JSON:
+Return ONLY valid JSON.
+
+FORMAT:
 {
   "intent": "<category>",
-  "confidence": <0.0-1.0>,
+  "confidence": 0.0-1.0,
   "requires_reasoning": true/false,
-  "sub_intent": "<optional>"
+  "reason": "<short explanation>"
 }
 
-Message: {message}
+Message:
+{message}
+
+Conversation Context:
+{context}
 """
 
 SUMMARIZATION_PROMPT = """
