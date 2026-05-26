@@ -12,6 +12,7 @@ from providers.llm.model_router import ModelRouter
 from memory.short_term.short_term_memory import ShortTermMemory
 from memory.working.working_memory import WorkingMemory
 from personality.personality_engine import PersonalityEngine
+from cognition.habits.reinforcement import HabitReinforcement
 from security.validator import InputValidator
 from security.guardrails import Guardrails
 from config.settings import DEBUG
@@ -34,6 +35,7 @@ class CognitiveLoop:
         guardrails: Guardrails,
         memory_reflection: MemoryReflection,
         mood_emotional_memory: MoodEmotionalMemory,
+        habit_reinforcement: HabitReinforcement,
     ):
         self.state_manager = state_manager
         self.cognitive_state = cognitive_state
@@ -50,6 +52,8 @@ class CognitiveLoop:
         self.memory_reflection = memory_reflection
         self.mood_emotional_memory = mood_emotional_memory
         self.summarize_interval = 10
+        self.habit_reinforcement = habit_reinforcement
+        self.decay_interval = 50   
 
         self.context_manager = ContextManager(
             cognitive_state, short_term, working_memory, personality
@@ -129,6 +133,12 @@ class CognitiveLoop:
 
         if self.cognitive_state.interaction_count % self.summarize_interval == 0:
             self.memory_reflection.reflect(self.short_term.messages)
+
+        if self.cognitive_state.interaction_count % self.decay_interval == 0:
+            habits = self.habit_store.get_all()
+            decayed = self.habit_reinforcement.decay_habits(habits)
+            self.habit_store.save(decayed)
+            self.cognitive_state.seed_habits_from_store(decayed)
 
         self.state_manager.transition(RuntimeState.IDLE)
         return response
