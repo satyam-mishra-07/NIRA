@@ -1,0 +1,140 @@
+[
+  {
+    "timestamp": "2026-05-26T15:12:45.916303",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T15:13:11.850324",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T15:13:55.709492",
+    "mood": "curious",
+    "confidence": 0.9,
+    "reason": "keyword match: curious"
+  },
+  {
+    "timestamp": "2026-05-26T15:14:31.934392",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T15:15:14.395027",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T15:15:36.059772",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T15:15:56.866498",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T15:16:47.728206",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T15:46:02.550072",
+    "mood": "curious",
+    "confidence": 0.9,
+    "reason": "keyword match: curious"
+  },
+  {
+    "timestamp": "2026-05-26T15:46:45.528079",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T15:47:56.069261",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T15:48:34.175179",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T15:49:28.049959",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T15:50:30.497340",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T15:51:46.771758",
+    "mood": "playful",
+    "confidence": 0.9,
+    "reason": "keyword match: playful"
+  },
+  {
+    "timestamp": "2026-05-26T15:53:27.884112",
+    "mood": "curious",
+    "confidence": 0.9,
+    "reason": "keyword match: curious"
+  },
+  {
+    "timestamp": "2026-05-26T15:53:49.909424",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T15:54:56.389600",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T15:56:13.810241",
+    "mood": "playful",
+    "confidence": 0.9,
+    "reason": "keyword match: playful"
+  },
+  {
+    "timestamp": "2026-05-26T16:01:24.060838",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T16:01:44.322032",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T16:02:20.547471",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T16:02:39.844026",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  }
+]

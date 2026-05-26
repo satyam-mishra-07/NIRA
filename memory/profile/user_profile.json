@@ -1,17 +1,12 @@
 {
   "name": "Satyam",
-  "interests": [
-    "backend development",
-    "AI",
-    "anime",
-    "gaming",
-    "music"
-  ],
+  "role": "creator_of_nira",
   "communication_preference": "natural",
   "preferred_tone": "casual",
   "known_languages": [
     "English",
-    "Hindi"
+    "Hindi",
+    "Hinglish"
   ],
-  "interaction_count": 21
+  "interaction_count": 44
 }

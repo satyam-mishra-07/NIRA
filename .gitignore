@@ -1,38 +1,49 @@
+# =========================
+# NIRA MEMORY / LEARNINGS
+# =========================
+
+memory/profiles/*.json
+memory/emotional_memory/
+memory/habit_memory/
+memory/summary_memory/
+memory/short_term/
+memory/working_memory/
+memory/chroma/
+memory/vector_db/
+
+# Runtime cognitive state
+runtime/state/
+runtime/cache/
+
+# Generated summaries
+summaries/
+
+# Logs
+logs/
+*.log
+
+# Local databases
+*.db
+*.sqlite3
+
+# Temporary runtime files
+temp/
+tmp/
+
+# AI generated artifacts
+workspace/generated/
+
+# Environment
+.env
+
 # Python
 __pycache__/
 *.pyc
 
 # Virtual Environment
 venv/
+.venv/
+
+# Environment Variables
 .env
-
-# Logs
-logs/
-
-# Memory Databases
-memory/chroma/
-memory/sqlite/
-
-# OS Files
-.DS_Store
-Thumbs.db
-
-# VSCode
-.vscode/
-
-# Playwright
-playwright-report/
-
-# Models
-models/cache/
-models/local/
-
-# Audio
-*.wav
-*.mp3
-
-# Secrets
-*.key
-
-# Workspace
-workspace/
+.env.*
