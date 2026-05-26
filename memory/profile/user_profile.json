@@ -1,12 +1,21 @@
 {
   "name": "Satyam",
-  "role": "creator_of_nira",
+  "interests": [
+    "backend development",
+    "AI",
+    "anime",
+    "gaming",
+    "music"
+  ],
   "communication_preference": "natural",
   "preferred_tone": "casual",
   "known_languages": [
     "English",
-    "Hindi",
-    "Hinglish"
+    "Hindi"
   ],
+<<<<<<< HEAD
   "interaction_count": 57
+=======
+  "interaction_count": 21
+>>>>>>> parent of 83dbe3c (Reasoning Fix)
 }

@@ -47,6 +47,12 @@ from cognition.intent.signal import CognitionSignal  # correct location
 
 ModelTrack = Literal["reasoning_model", "conversational_model"]
 
+<<<<<<< HEAD
+=======
+    def route(self, intent: dict, context: dict) -> str:
+        intent_name = intent.get("intent", "casual_chat")
+        confidence = intent.get("confidence", 0.0)
+>>>>>>> parent of 83dbe3c (Reasoning Fix)
 
 @dataclass
 class RouteDecision:
@@ -65,6 +71,7 @@ class RouteDecision:
     response_depth: str
     routing_reason: str
 
+<<<<<<< HEAD
     def to_dict(self) -> dict:
         return {
             "model_track": self.model_track,
@@ -149,3 +156,19 @@ class ExecutionRouter:
             response_depth=signal.response_depth,
             routing_reason=reason,
         )
+=======
+        if intent_name == "coding_help":
+            return "coding_help"
+        elif intent_name == "file_operation":
+            return "file_operation"
+        elif intent_name == "browser_request" and self.execution_context.browser_allowed:
+            return "browser_request"
+        elif intent_name == "productivity":
+            return "productivity"
+        elif intent_name == "system":
+            return "system"
+        elif intent_name == "tool_execution" and self.execution_context.terminal_allowed:
+            return "tool_execution"
+        else:
+            return "casual_chat"
+>>>>>>> parent of 83dbe3c (Reasoning Fix)

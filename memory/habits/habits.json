@@ -1,6 +1,7 @@
 [
   {
     "habit": "coding_assistance",
+<<<<<<< HEAD
     "confidence": 0.0375,
     "first_observed": null,
     "last_reinforced": "keyword matches: 1"
@@ -14,6 +15,9 @@
   {
     "habit": "music_while_coding",
     "confidence": 0.0075,
+=======
+    "confidence": 0.015,
+>>>>>>> parent of 83dbe3c (Reasoning Fix)
     "first_observed": null,
     "last_reinforced": "keyword matches: 1"
   }

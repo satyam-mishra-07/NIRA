@@ -58,6 +58,7 @@
     "role": "assistant",
     "content": "I can't process that request. [potentially dangerous pattern detected]",
     "timestamp": "2026-05-26T14:24:15.197444"
+<<<<<<< HEAD
   },
   {
     "role": "user",
@@ -408,5 +409,7 @@
     "role": "assistant",
     "content": "Hi Satyam. Need anything? I'm here if you want to talk or need help with something.",
     "timestamp": "2026-05-26T16:52:45.505878"
+=======
+>>>>>>> parent of 83dbe3c (Reasoning Fix)
   }
 ]
