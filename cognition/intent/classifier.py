@@ -44,6 +44,12 @@ class IntentClassifier:
             normalized = normalized.replace(hing, eng)
         return normalized
 
+    def _requires_reasoning(self, intent_name: str) -> bool:
+        return intent_name in {
+            "coding_help", "tool_execution", "browser_request",
+            "file_operation", "productivity", "system",
+        }
+
     def _classify_internal(self, text: str) -> dict:
         scores = {}
         for intent, patterns in self.patterns.items():
@@ -57,13 +63,13 @@ class IntentClassifier:
         casual_score = sum(1 for p in self.casual_patterns if re.search(p, text))
 
         if not scores and casual_score > 0:
-            return {"intent": "casual_chat", "confidence": 0.6, "sub_intent": None}
+            return {"intent": "casual_chat", "confidence": 0.6, "sub_intent": None, "requires_reasoning": False}
         if not scores:
-            return {"intent": "casual_chat", "confidence": 0.3, "sub_intent": None}
+            return {"intent": "casual_chat", "confidence": 0.3, "sub_intent": None, "requires_reasoning": False}
 
         best = max(scores, key=scores.get)
         confidence = min(0.5 + (scores[best] / sum(scores.values())) * 0.4, 0.95)
-        return {"intent": best, "confidence": round(confidence, 2), "sub_intent": None}
+        return {"intent": best, "confidence": round(confidence, 2), "sub_intent": None, "requires_reasoning": self._requires_reasoning(best)}
 
     def classify(self, message: str) -> dict:
         original_result = self._classify_internal(message.lower())
