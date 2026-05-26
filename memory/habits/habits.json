@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "habit": "coding_assistance",
+    "confidence": 0.015,
+    "first_observed": null,
+    "last_reinforced": "keyword matches: 1"
+  }
+]

@@ -1,10 +1,10 @@
 from providers.llm.openrouter_provider import get_openrouter
-from config.settings import FALLBACK_MODEL, LLM_TIMEOUT, DEBUG
+from config.settings import REASONING_MODEL, LLM_TIMEOUT, DEBUG
 
 class ReasoningModel:
     def __init__(self):
         self.client = get_openrouter()
-        self.model = FALLBACK_MODEL
+        self.model = REASONING_MODEL
         self.timeout = LLM_TIMEOUT
 
     def generate(self, system_prompt: str, user_message: str, context: dict = None, stream: bool = False, stream_handler=None) -> str:

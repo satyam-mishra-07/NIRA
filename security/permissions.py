@@ -12,7 +12,7 @@ class Permissions:
             "delete_file": self.confirm_delete,
             "terminal_exec": self.terminal_allowed,
             "browser_auto": self.browser_allowed,
-            "file_write": not self.safe_mode or True,
+            "file_write": True,
         }
         return checks.get(action, False)
 
