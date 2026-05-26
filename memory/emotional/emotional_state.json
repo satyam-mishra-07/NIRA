@@ -282,19 +282,79 @@
     "reason": "question detected"
   },
   {
-    "timestamp": "2026-05-26T22:07:30.690745",
+    "timestamp": "2026-05-26T16:18:47.157040",
     "mood": "curious",
     "confidence": 0.35,
     "reason": "question detected"
   },
   {
-    "timestamp": "2026-05-26T22:07:57.579064",
+    "timestamp": "2026-05-26T16:19:26.610369",
     "mood": "neutral",
     "confidence": 0.2,
     "reason": "no strong signals"
   },
   {
-    "timestamp": "2026-05-26T22:17:00.552208",
+    "timestamp": "2026-05-26T16:20:33.842061",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T16:21:39.937843",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T16:22:23.928390",
+    "mood": "tired",
+    "confidence": 0.9,
+    "reason": "keyword match: tired"
+  },
+  {
+    "timestamp": "2026-05-26T16:23:11.887152",
+    "mood": "curious",
+    "confidence": 0.9,
+    "reason": "keyword match: curious"
+  },
+  {
+    "timestamp": "2026-05-26T16:23:54.407502",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T16:26:55.468597",
+    "mood": "focused",
+    "confidence": 0.9,
+    "reason": "keyword match: focused"
+  },
+  {
+    "timestamp": "2026-05-26T16:27:25.276571",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T16:27:52.134548",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T16:49:53.467417",
+    "mood": "curious",
+    "confidence": 0.9,
+    "reason": "keyword match: curious"
+  },
+  {
+    "timestamp": "2026-05-26T16:52:42.884867",
+    "mood": "neutral",
+    "confidence": 0.3,
+    "reason": "short message"
+  },
+  {
+    "timestamp": "2026-05-26T17:24:07.946577",
     "mood": "neutral",
     "confidence": 0.3,
     "reason": "short message"

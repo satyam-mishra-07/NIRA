@@ -30,15 +30,6 @@ class PersonalityEngine:
         tone = template.get("tone", ["warm", "natural"])
         speech = template.get("speech_style", ["concise"])
         avoid = template.get("avoid", [])
-        relevant_habits = context.get("relevant_habits", [])
-        
-        habit_text = ""
-
-        if relevant_habits:
-            habit_text = "\nRelevant User Context:\n"
-            
-            for habit in relevant_habits[:2]:
-                habit_text += f"- {habit}\n"
 
         mood = (context or {}).get("mood", {})
         mood_name = mood.get("mood", "neutral")
@@ -65,23 +56,16 @@ RESPONSE RULES:
 - Never be robotic or overly formal.
 - Never pretend certainty about emotions or diagnoses.
 - Be subtle, calm, and contextual.
-- Avoid unnecessary embellishment.
-- Do not over-personalize every response.
-- Most replies should feel casual and effortless.
 
 CURRENT CONTEXT:
 - Mood signal: {mood_name}
 - Time: {datetime.now().strftime('%H:%M')}
 
-USER IDENTITY:
-- Name: Satyam
-- Creator of NIRA
-- Prefers natural conversation
-- Speaks English, Hindi, and Hinglish
-
-{habit_text}
-
-"""
+ABOUT SATYAM:
+- Backend and AI developer
+- Interested in AI systems, anime, manga, gaming
+- Enjoys music while coding
+- Prefers natural, human-like conversation"""
         return prompt.strip()
 
     def build_reasoning_prompt(self, context: dict = None) -> str:

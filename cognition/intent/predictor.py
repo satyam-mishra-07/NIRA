@@ -1,7 +1,9 @@
-from cognition.intent.classifier import IntentClassifier
+from cognition.intent.classifier import CognitionAssessor       # renamed from IntentClassifier
+from cognition.intent.signal import CognitionSignal             # typed signal, replaces raw dict
+
 
 class IntentPredictor:
-    def __init__(self, classifier: IntentClassifier):
+    def __init__(self, classifier: CognitionAssessor):
         self.classifier = classifier
 
     def _requires_reasoning(self, intent_name: str) -> bool:
@@ -16,10 +18,6 @@ class IntentPredictor:
         if context:
             working = context.get("working", {})
             current_task = working.get("current_task", "")
-            if "coding" in current_task.lower() and base["confidence"] < 0.6:
-                base["intent"] = "coding_help"
-                base["confidence"] = round(base["confidence"] + 0.15, 2)
-                base["sub_intent"] = "context_biased"
 
         if "requires_reasoning" not in base:
             base["requires_reasoning"] = self._requires_reasoning(base["intent"])

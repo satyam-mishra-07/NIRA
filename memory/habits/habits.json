@@ -7,13 +7,14 @@
   },
   {
     "habit": "casual_conversation",
-    "confidence": 0.0975,
+    "confidence": 0.06,
     "first_observed": null,
     "last_reinforced": "keyword matches: 1"
   },
   {
     "habit": "music_while_coding",
     "confidence": 0.0075,
+    "confidence": 0.015,
     "first_observed": null,
     "last_reinforced": "keyword matches: 1"
   },
