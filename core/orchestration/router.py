@@ -1,5 +1,5 @@
 """
-core/orchestration/router.py  →  ExecutionRouter
+core/orchestration/router.py  →  ExecutionRouter + OrchestrationRouter
 
 WHY THE OLD ROUTER FAILED:
   The old router used `intent_name` string matching to decide model selection:
@@ -42,17 +42,12 @@ MODELS:
 from dataclasses import dataclass
 from typing import Optional, Literal
 
-from cognition.intent.signal import CognitionSignal  # correct location
+from cognition.intent.signal import CognitionSignal
+from core.orchestration.execution_context import ExecutionContext
 
 
 ModelTrack = Literal["reasoning_model", "conversational_model"]
 
-<<<<<<< HEAD
-=======
-    def route(self, intent: dict, context: dict) -> str:
-        intent_name = intent.get("intent", "casual_chat")
-        confidence = intent.get("confidence", 0.0)
->>>>>>> parent of 83dbe3c (Reasoning Fix)
 
 @dataclass
 class RouteDecision:
@@ -71,7 +66,6 @@ class RouteDecision:
     response_depth: str
     routing_reason: str
 
-<<<<<<< HEAD
     def to_dict(self) -> dict:
         return {
             "model_track": self.model_track,
@@ -94,8 +88,6 @@ class ExecutionRouter:
     - Reasoning + tools are fully orthogonal — both can be True simultaneously
     """
 
-    # Confidence below this threshold triggers a safe downgrade
-    # to conversational model, even if requires_reasoning=True
     CONFIDENCE_THRESHOLD = 0.35
 
     def route(self, signal: CognitionSignal) -> RouteDecision:
@@ -104,9 +96,6 @@ class ExecutionRouter:
         Never raises. Always returns a valid RouteDecision.
         """
 
-        # ── Safety gate: low confidence ───────────────────────────────────────
-        # If the classifier isn't confident, we should NOT commit to
-        # expensive reasoning. Downgrade but preserve tool detection.
         if signal.confidence < self.CONFIDENCE_THRESHOLD and signal.raw_source != "regex":
             reason = (
                 f"Low confidence ({signal.confidence:.2f}) — "
@@ -122,9 +111,6 @@ class ExecutionRouter:
                 routing_reason=reason,
             )
 
-        # ── Primary routing decision ──────────────────────────────────────────
-        # requires_reasoning is the SOLE criterion for model selection.
-        # This is intentional — decouples intent taxonomy from model routing.
         if signal.requires_reasoning:
             model_track: ModelTrack = "reasoning_model"
             reason = (
@@ -138,8 +124,6 @@ class ExecutionRouter:
                 f"Intent: {signal.intent}"
             )
 
-        # ── Tool activation is fully independent of model selection ──────────
-        # A reasoning request CAN also need tools (e.g. "search and explain")
         activate_tools = signal.requires_tools
 
         if activate_tools:
@@ -156,19 +140,41 @@ class ExecutionRouter:
             response_depth=signal.response_depth,
             routing_reason=reason,
         )
-=======
-        if intent_name == "coding_help":
-            return "coding_help"
-        elif intent_name == "file_operation":
-            return "file_operation"
-        elif intent_name == "browser_request" and self.execution_context.browser_allowed:
-            return "browser_request"
-        elif intent_name == "productivity":
-            return "productivity"
-        elif intent_name == "system":
-            return "system"
-        elif intent_name == "tool_execution" and self.execution_context.terminal_allowed:
-            return "tool_execution"
-        else:
+
+
+class OrchestrationRouter:
+    """
+    Legacy router for backwards compatibility.
+    Returns string routing decisions: "reasoning", "casual_chat", "browser_request", etc.
+
+    Used by older code paths. New code should use ExecutionRouter instead.
+    """
+
+    def __init__(self, execution_context: ExecutionContext):
+        self.execution_context = execution_context
+
+    def route(self, intent: dict, context: dict) -> str:
+        intent_name = intent.get("intent", "casual_chat")
+        confidence = intent.get("confidence", 0.0)
+        requires_reasoning = intent.get("requires_reasoning", False)
+
+        threshold = 0.5
+
+        if confidence < threshold:
             return "casual_chat"
->>>>>>> parent of 83dbe3c (Reasoning Fix)
+
+        if intent_name == "browser_request":
+            if self.execution_context.browser_allowed:
+                return "browser_request"
+
+        if intent_name == "tool_execution":
+            if self.execution_context.terminal_allowed:
+                return "tool_execution"
+
+        if intent_name == "file_operation":
+            return "file_operation"
+
+        if requires_reasoning:
+            return "reasoning"
+
+        return "casual_chat"

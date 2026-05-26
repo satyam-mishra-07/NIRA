@@ -1,14 +1,17 @@
+from __future__ import annotations
+
 from core.state.runtime_state import RuntimeState, RuntimeStateManager
 from core.cognition.state_manager import CognitiveStateManager
 from core.runtime.event_bus import get_bus
 from core.runtime.context_manager import ContextManager
-from core.orchestration.router import OrchestrationRouter
+from core.orchestration.router import OrchestrationRouter, ExecutionRouter, RouteDecision
 from core.orchestration.execution_context import ExecutionContext
+from core.orchestration.tool_planner import ToolPlanner
 from cognition.mood.analyzer import MoodAnalyzer
 from cognition.habits.observer import HabitObserver
 from cognition.habits.habit_store import HabitStore
 from cognition.intent.predictor import IntentPredictor
-from cognition.intent.signal import CognitionSignal             # NEW: typed signal
+from cognition.intent.signal import CognitionSignal
 from cognition.reflection.memory_reflection import MemoryReflection
 from cognition.mood.emotional_memory import MoodEmotionalMemory
 
@@ -31,8 +34,6 @@ class CognitiveLoop:
         habit_observer: HabitObserver,
         habit_store: HabitStore,
         intent_predictor: IntentPredictor,
-        execution_router: ExecutionRouter,          # NEW
-        tool_planner: ToolPlanner,                  # NEW
         model_router: ModelRouter,
         short_term: ShortTermMemory,
         working_memory: WorkingMemory,
@@ -42,6 +43,8 @@ class CognitiveLoop:
         memory_reflection: MemoryReflection,
         mood_emotional_memory: MoodEmotionalMemory,
         habit_reinforcement: HabitReinforcement,
+        execution_router: ExecutionRouter | None = None,
+        tool_planner: ToolPlanner | None = None,
     ):
         self.state_manager = state_manager
         self.cognitive_state = cognitive_state
@@ -49,8 +52,6 @@ class CognitiveLoop:
         self.habit_observer = habit_observer
         self.habit_store = habit_store
         self.intent_predictor = intent_predictor
-        self.execution_router = execution_router    # NEW
-        self.tool_planner = tool_planner            # NEW
         self.model_router = model_router
         self.short_term = short_term
         self.working_memory = working_memory
@@ -62,6 +63,9 @@ class CognitiveLoop:
         self.summarize_interval = 10
         self.habit_reinforcement = habit_reinforcement
         self.decay_interval = 50
+
+        self.execution_router = execution_router
+        self.tool_planner = tool_planner
 
         self.context_manager = ContextManager(
             cognitive_state, short_term, working_memory, personality
@@ -80,7 +84,6 @@ class CognitiveLoop:
         self.state_manager.transition(RuntimeState.PROCESSING)
         self.cognitive_state.increment_interaction()
 
-        # ── Security ──────────────────────────────────────────────────────────
         validation = self.validator.validate_message(user_input)
         if not validation["safe"]:
             msg = f"I can't process that request. [{validation['reason']}]"
@@ -89,69 +92,54 @@ class CognitiveLoop:
             self.state_manager.transition(RuntimeState.IDLE)
             return msg
 
-        # ── Context + memory ──────────────────────────────────────────────────
         context = self.context_manager.build()
         self.working_memory.update_from_input(user_input)
         self.short_term.add_user_message(user_input)
 
-        # ── Mood ──────────────────────────────────────────────────────────────
         mood_result = self.mood_analyzer.analyze(user_input, context)
         self.cognitive_state.update_mood(mood_result)
         self.mood_emotional_memory.store_mood(mood_result)
 
-        # ── Habits ───────────────────────────────────────────────────────────
         observations = self.habit_observer.observe(user_input, context)
         self.cognitive_state.update_habits(observations)
         if observations:
             self.habit_store.update_from_observations(observations)
 
-        # ── Intent assessment → typed CognitionSignal ─────────────────────────
-        # predict() now returns a CognitionSignal, not a raw dict.
-        # cognitive_state.update_intent() receives the signal's dict
-        # representation for backward compatibility with state storage.
         signal: CognitionSignal = self.intent_predictor.predict(user_input, context)
         self.cognitive_state.update_intent(signal.to_dict())
 
-        orchestration_decision = self.orchestration_router.route(intent_result, context)
-        if orchestration_decision in ("reasoning", "browser_request", "tool_execution", "file_operation"):
-            intent_result["requires_reasoning"] = True
+        if self.execution_router is not None:
+            route = self.execution_router.route(signal)
 
-        context = self.context_manager.build()
+            tool_context = ""
+            if self.tool_planner is not None and route.activate_tools:
+                tool_result = self.tool_planner.execute(route.tool_type, user_input)
+                if tool_result:
+                    if tool_result.success:
+                        tool_context = tool_result.to_context_string()
+                    else:
+                        tool_context = f"[Tool {route.tool_type} failed: {tool_result.error}]"
 
-        # ── Routing: model selection + tool activation ────────────────────────
-        # ExecutionRouter reads only signal.requires_reasoning and
-        # signal.requires_tools — never intent name strings.
-        route = self.execution_router.route(signal)
+            model = self.model_router.select(route)
+        else:
+            intent_result = signal.to_dict()
 
-        # ── Tool execution (if needed) ────────────────────────────────────────
-        # Tool result is injected into context so the model can reference it.
-        # This runs BEFORE model.generate() so the model sees the tool output.
-        tool_context = ""
-        if route.activate_tools:
-            tool_result = self.tool_planner.execute(route.tool_type, user_input)
-            if tool_result:
-                if tool_result.success:
-                    tool_context = tool_result.to_context_string()
-                else:
-                    # Tool failed — tell the model explicitly so it doesn't
-                    # hallucinate a result. NIRA's system prompt says:
-                    # "Never claim an action was completed unless confirmed."
-                    tool_context = f"[Tool {route.tool_type} failed: {tool_result.error}]"
+            orchestration_decision = self.orchestration_router.route(intent_result, context)
+            if orchestration_decision in ("reasoning", "browser_request", "tool_execution", "file_operation"):
+                intent_result["requires_reasoning"] = True
 
-        # ── Model selection ───────────────────────────────────────────────────
-        # model_router.select() receives the route decision.
-        # Update ModelRouter to accept RouteDecision if it currently
-        # reads raw intent dicts — see note below.
-        model = self.model_router.select(route)
+            context = self.context_manager.build()
 
-        # ── Generation ────────────────────────────────────────────────────────
+            model = self.model_router.select(intent_result)
+            route = None
+            tool_context = ""
+
         self.state_manager.transition(RuntimeState.RESPONDING)
         if model is self.model_router.reasoning:
             system_prompt = self.personality.build_reasoning_prompt(context)
         else:
             system_prompt = self.personality.build_system_prompt(context)
 
-        # Append tool output to context if present
         if tool_context:
             context = context + f"\n\n{tool_context}"
 
@@ -195,16 +183,17 @@ class CognitiveLoop:
 
         self.short_term.add_assistant_message(response)
 
-        # ── Event bus ─────────────────────────────────────────────────────────
-        self.bus.emit("cognitive:complete", {
+        event_payload = {
             "input": user_input,
             "response": response,
             "mood": mood_result,
-            "intent": signal.to_dict(),             # emit full signal, not just intent name
-            "route": route.to_dict(),               # emit route decision for observability
-        })
+            "intent": signal.to_dict(),
+        }
+        if route is not None:
+            event_payload["route"] = route.to_dict()
 
-        # ── Periodic tasks ────────────────────────────────────────────────────
+        self.bus.emit("cognitive:complete", event_payload)
+
         if self.cognitive_state.interaction_count % self.summarize_interval == 0:
             self.memory_reflection.reflect(self.short_term.messages)
 
