@@ -2,9 +2,8 @@ from core.state.runtime_state import RuntimeState, RuntimeStateManager
 from core.cognition.state_manager import CognitiveStateManager
 from core.runtime.event_bus import get_bus
 from core.runtime.context_manager import ContextManager
-from core.orchestration.router import ExecutionRouter           # NEW
-from core.orchestration.tool_planner import ToolPlanner         # NEW
-
+from core.orchestration.router import OrchestrationRouter
+from core.orchestration.execution_context import ExecutionContext
 from cognition.mood.analyzer import MoodAnalyzer
 from cognition.habits.observer import HabitObserver
 from cognition.habits.habit_store import HabitStore
@@ -71,6 +70,9 @@ class CognitiveLoop:
 
         self.cognitive_state.seed_habits_from_store(self.habit_store.get_all())
 
+        self.execution_context = ExecutionContext()
+        self.orchestration_router = OrchestrationRouter(self.execution_context)
+
     def process(self, user_input: str, stream_handler=None):
         if not self.state_manager.can_process():
             return
@@ -110,7 +112,10 @@ class CognitiveLoop:
         signal: CognitionSignal = self.intent_predictor.predict(user_input, context)
         self.cognitive_state.update_intent(signal.to_dict())
 
-        # Rebuild context after intent is known (intent can affect context)
+        orchestration_decision = self.orchestration_router.route(intent_result, context)
+        if orchestration_decision in ("reasoning", "browser_request", "tool_execution", "file_operation"):
+            intent_result["requires_reasoning"] = True
+
         context = self.context_manager.build()
 
         # ── Routing: model selection + tool activation ────────────────────────
@@ -141,7 +146,10 @@ class CognitiveLoop:
 
         # ── Generation ────────────────────────────────────────────────────────
         self.state_manager.transition(RuntimeState.RESPONDING)
-        system_prompt = self.personality.build_system_prompt(context)
+        if model is self.model_router.reasoning:
+            system_prompt = self.personality.build_reasoning_prompt(context)
+        else:
+            system_prompt = self.personality.build_system_prompt(context)
 
         # Append tool output to context if present
         if tool_context:
@@ -157,9 +165,28 @@ class CognitiveLoop:
             )
         except Exception as e:
             if DEBUG:
-                print(f"\n[error] LLM generation failed: {e}")
-            self.state_manager.transition(RuntimeState.IDLE)
-            return "I hit a snag. Could you try rephrasing that?"
+                print(f"\n[error] {type(model).__name__} failed: {e}")
+            fallback = self.model_router.conversation if model is self.model_router.reasoning else self.model_router.reasoning
+            fallback_prompt = (
+                self.personality.build_reasoning_prompt(context)
+                if fallback is self.model_router.reasoning
+                else self.personality.build_system_prompt(context)
+            )
+            try:
+                if DEBUG:
+                    print(f"[cognitive_loop] Falling back to {type(fallback).__name__}")
+                response = fallback.generate(
+                    system_prompt=fallback_prompt,
+                    user_message=user_input,
+                    context=context,
+                    stream=stream_handler is not None,
+                    stream_handler=stream_handler,
+                )
+            except Exception as e2:
+                if DEBUG:
+                    print(f"\n[error] Fallback also failed: {e2}")
+                self.state_manager.transition(RuntimeState.IDLE)
+                return "I hit a snag. Could you try rephrasing that?"
 
         if not response:
             response = "I'm not sure what to say to that."

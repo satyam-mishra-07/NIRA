@@ -74,35 +74,27 @@ class CognitionAssessor:
             "samjhao", "batao", "kyun", "kaise", "compare karo",  # Hinglish
         ]
 
-    # ── Public API ────────────────────────────────────────────────────────────
+    def _normalize_hinglish(self, text: str) -> str:
+        normalized = text.lower()
+        for hing, eng in sorted(self._hinglish_map.items(), key=lambda x: -len(x[0])):
+            normalized = normalized.replace(hing, eng)
+        return normalized
 
-    def assess(self, message: str, context: str = "") -> CognitionSignal:
-        """
-        Main entry point. Produces a full CognitionSignal for a user message.
+    def _requires_reasoning(self, intent_name: str) -> bool:
+        return intent_name in {
+            "coding_help", "tool_execution", "browser_request",
+            "file_operation", "productivity", "system",
+        }
 
-        Flow:
-          1. Run regex pre-filter → get tool_hints (non-blocking)
-          2. Detect reasoning hint keywords → enrich prompt
-          3. Call LLM with enriched prompt
-          4. Parse response via extract_json
-          5. Validate via CognitionSignal.from_dict
-          6. Merge regex tool_hints into signal if LLM missed them
-          7. Return signal (never raises)
-        """
-        tool_hint = self._detect_tool_hint(message)
-        reasoning_hint = self._detect_reasoning_hints(message)
-
-        try:
-            signal = self._llm_assess(message, context, tool_hint, reasoning_hint)
-        except Exception as e:
-            print(f"[cognition_assessor] LLM call failed: {e}")
-            signal = None
-
-        if signal is None:
-            # LLM failed entirely — build a safe fallback
-            signal = self._build_safe_fallback(tool_hint, message)
-            print(f"[cognition_assessor] Using fallback signal: {signal.to_dict()}")
-            return signal
+    def _classify_internal(self, text: str) -> dict:
+        scores = {}
+        for intent, patterns in self.patterns.items():
+            score = 0
+            for pattern in patterns:
+                if re.search(pattern, text):
+                    score += 1
+            if score > 0:
+                scores[intent] = score
 
         # Merge regex tool hints: if regex detected a tool need but LLM missed it,
         # trust the regex. This prevents tool requests from silently becoming chat.
@@ -132,89 +124,20 @@ class CognitionAssessor:
             if score > 0:
                 scores[tool_type] = score
 
+        if not scores and casual_score > 0:
+            return {"intent": "casual_chat", "confidence": 0.6, "sub_intent": None, "requires_reasoning": False}
         if not scores:
-            return None
+            return {"intent": "casual_chat", "confidence": 0.3, "sub_intent": None, "requires_reasoning": False}
 
-        return max(scores, key=scores.get)
+        best = max(scores, key=scores.get)
+        confidence = min(0.5 + (scores[best] / sum(scores.values())) * 0.4, 0.95)
+        return {"intent": best, "confidence": round(confidence, 2), "sub_intent": None, "requires_reasoning": self._requires_reasoning(best)}
 
-    def _detect_reasoning_hints(self, text: str) -> bool:
-        """
-        Returns True if message contains strong reasoning signal keywords.
-        Used to enrich the LLM prompt — NOT used for routing directly.
-        """
-        text_lower = text.lower()
-        return any(kw in text_lower for kw in self._reasoning_hint_keywords)
-
-    def _llm_assess(
-        self,
-        message: str,
-        context: str,
-        tool_hint: Optional[str],
-        reasoning_hint: bool,
-    ) -> Optional[CognitionSignal]:
-        """
-        Calls the LLM and returns a parsed CognitionSignal, or None if parsing fails.
-        """
-        prompt = COGNITION_ASSESSMENT_PROMPT.format(
-            message=message,
-            context=context or "No prior context",
-            tool_hint=tool_hint or "none",
-            reasoning_hint="yes" if reasoning_hint else "no",
-        )
-
-        response = self.llm.generate(
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are a cognitive routing engine. "
-                        "Respond ONLY with a single valid JSON object. "
-                        "No preamble, no explanation, no markdown. "
-                        "Just the JSON object."
-                    ),
-                },
-                {
-                    "role": "user",
-                    "content": prompt,
-                },
-            ],
-            temperature=0.05,  # Near-deterministic for classification
-        )
-
-        if not response:
-            return None
-
-        parsed = extract_json(response)
-
-        if parsed is None:
-            print(f"[cognition_assessor] JSON extraction failed. Raw response: {repr(response[:200])}")
-            return None
-
-        return CognitionSignal.from_dict(parsed)
-
-    def _build_safe_fallback(
-        self,
-        tool_hint: Optional[str],
-        message: str,
-    ) -> CognitionSignal:
-        """
-        Builds the best possible fallback signal when the LLM fails.
-        Uses regex hints if available to avoid completely wrong routing.
-        """
-        if tool_hint:
-            # At least route to the right tool even without LLM
-            return CognitionSignal(
-                intent="tool_execution",
-                confidence=0.5,
-                requires_reasoning=False,
-                requires_tools=True,
-                tool_type=tool_hint,
-                response_depth="short",
-                reason=f"LLM failed; regex detected tool={tool_hint}",
-                raw_source="fallback",
-            )
-
-        # Completely unknown — safe neutral fallback
-        return CognitionSignal.safe_fallback(
-            reason="LLM assessment failed; no regex hints available"
-        )
+    def classify(self, message: str) -> dict:
+        original_result = self._classify_internal(message.lower())
+        normalized = self._normalize_hinglish(message)
+        if normalized != message.lower():
+            normalized_result = self._classify_internal(normalized)
+            if normalized_result["confidence"] > original_result["confidence"]:
+                return normalized_result
+        return original_result

@@ -1,101 +1,5 @@
 [
   {
-    "timestamp": "2026-05-26T15:12:45.916303",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T15:13:11.850324",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T15:13:55.709492",
-    "mood": "curious",
-    "confidence": 0.9,
-    "reason": "keyword match: curious"
-  },
-  {
-    "timestamp": "2026-05-26T15:14:31.934392",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T15:15:14.395027",
-    "mood": "neutral",
-    "confidence": 0.2,
-    "reason": "no strong signals"
-  },
-  {
-    "timestamp": "2026-05-26T15:15:36.059772",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T15:15:56.866498",
-    "mood": "neutral",
-    "confidence": 0.2,
-    "reason": "no strong signals"
-  },
-  {
-    "timestamp": "2026-05-26T15:16:47.728206",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T15:46:02.550072",
-    "mood": "curious",
-    "confidence": 0.9,
-    "reason": "keyword match: curious"
-  },
-  {
-    "timestamp": "2026-05-26T15:46:45.528079",
-    "mood": "neutral",
-    "confidence": 0.2,
-    "reason": "no strong signals"
-  },
-  {
-    "timestamp": "2026-05-26T15:47:56.069261",
-    "mood": "neutral",
-    "confidence": 0.2,
-    "reason": "no strong signals"
-  },
-  {
-    "timestamp": "2026-05-26T15:48:34.175179",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T15:49:28.049959",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T15:50:30.497340",
-    "mood": "neutral",
-    "confidence": 0.2,
-    "reason": "no strong signals"
-  },
-  {
-    "timestamp": "2026-05-26T15:51:46.771758",
-    "mood": "playful",
-    "confidence": 0.9,
-    "reason": "keyword match: playful"
-  },
-  {
-    "timestamp": "2026-05-26T15:53:27.884112",
-    "mood": "curious",
-    "confidence": 0.9,
-    "reason": "keyword match: curious"
-  },
-  {
     "timestamp": "2026-05-26T15:53:49.909424",
     "mood": "neutral",
     "confidence": 0.2,
@@ -133,6 +37,246 @@
   },
   {
     "timestamp": "2026-05-26T16:02:39.844026",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T17:38:17.613627",
+    "mood": "neutral",
+    "confidence": 0.3,
+    "reason": "short message"
+  },
+  {
+    "timestamp": "2026-05-26T17:38:43.418779",
+    "mood": "neutral",
+    "confidence": 0.3,
+    "reason": "short message"
+  },
+  {
+    "timestamp": "2026-05-26T17:38:50.556955",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T20:46:09.291202",
+    "mood": "neutral",
+    "confidence": 0.3,
+    "reason": "short message"
+  },
+  {
+    "timestamp": "2026-05-26T20:46:35.580778",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T20:47:45.465505",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T20:48:13.860327",
+    "mood": "frustrated",
+    "confidence": 0.9,
+    "reason": "keyword match: frustrated"
+  },
+  {
+    "timestamp": "2026-05-26T20:48:43.907701",
+    "mood": "curious",
+    "confidence": 0.9,
+    "reason": "keyword match: curious"
+  },
+  {
+    "timestamp": "2026-05-26T20:49:35.504172",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T20:51:05.631646",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T20:52:43.819414",
+    "mood": "curious",
+    "confidence": 0.9,
+    "reason": "keyword match: curious"
+  },
+  {
+    "timestamp": "2026-05-26T20:53:30.602054",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T20:56:23.651040",
+    "mood": "curious",
+    "confidence": 0.9,
+    "reason": "keyword match: curious"
+  },
+  {
+    "timestamp": "2026-05-26T21:04:06.982230",
+    "mood": "curious",
+    "confidence": 0.9,
+    "reason": "keyword match: curious"
+  },
+  {
+    "timestamp": "2026-05-26T21:05:05.305494",
+    "mood": "curious",
+    "confidence": 0.9,
+    "reason": "keyword match: curious"
+  },
+  {
+    "timestamp": "2026-05-26T21:06:59.872262",
+    "mood": "curious",
+    "confidence": 0.9,
+    "reason": "keyword match: curious"
+  },
+  {
+    "timestamp": "2026-05-26T21:14:38.568296",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T21:18:00.119709",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T21:24:29.879886",
+    "mood": "curious",
+    "confidence": 0.9,
+    "reason": "keyword match: curious"
+  },
+  {
+    "timestamp": "2026-05-26T21:25:16.510418",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T21:29:06.594608",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T21:29:25.269560",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T21:30:12.079360",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T21:30:35.429673",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T21:31:19.557867",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T21:44:10.997667",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T21:45:01.489940",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T21:54:28.496028",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T21:55:34.390295",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T21:56:43.419705",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T21:57:11.316328",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T21:58:21.947920",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T21:58:52.760273",
+    "mood": "neutral",
+    "confidence": 0.3,
+    "reason": "short message"
+  },
+  {
+    "timestamp": "2026-05-26T21:59:14.659378",
+    "mood": "neutral",
+    "confidence": 0.3,
+    "reason": "short message"
+  },
+  {
+    "timestamp": "2026-05-26T21:59:55.560105",
+    "mood": "frustrated",
+    "confidence": 0.9,
+    "reason": "keyword match: frustrated"
+  },
+  {
+    "timestamp": "2026-05-26T22:01:01.750143",
+    "mood": "frustrated",
+    "confidence": 0.9,
+    "reason": "keyword match: frustrated"
+  },
+  {
+    "timestamp": "2026-05-26T22:01:23.550166",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T22:06:05.960351",
+    "mood": "neutral",
+    "confidence": 0.3,
+    "reason": "short message"
+  },
+  {
+    "timestamp": "2026-05-26T22:06:43.196442",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T22:07:06.142692",
     "mood": "curious",
     "confidence": 0.35,
     "reason": "question detected"
