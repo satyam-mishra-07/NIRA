@@ -15,6 +15,12 @@ from cognition.intent.predictor import IntentPredictor
 from cognition.intent.classifier import CognitionAssessor       # RENAMED: was IntentClassifier
 from cognition.reflection.memory_reflection import MemoryReflection
 from cognition.reflection.summarizer import ConversationSummarizer
+from cognition.reflection.self_reflector import SelfReflectionEngine
+from cognition.reflection.reflection_memory import ReflectionMemory
+from cognition.behavioral.extractor import BehavioralSignalExtractor
+from cognition.behavioral.memory import BehavioralMemory
+from cognition.behavioral.stabilizer import PersonalityStabilizer
+from memory.behavioral.behavioral_memory_store import BehavioralMemoryStore, ReflectionMemoryStore
 
 from memory.short_term.short_term_memory import ShortTermMemory
 from memory.working.working_memory import WorkingMemory
@@ -75,6 +81,15 @@ def main():
     summarizer = ConversationSummarizer()
     memory_reflection = MemoryReflection(summary_memory, summarizer)
 
+    # ── Behavioral alignment + Self-reflection layer ─────────────────────────
+    behavioral_store = BehavioralMemoryStore()
+    reflection_store = ReflectionMemoryStore()
+    behavioral_memory = BehavioralMemory(behavioral_store, confidence_engine)
+    behavioral_extractor = BehavioralSignalExtractor()
+    self_reflector = SelfReflectionEngine()
+    reflection_memory = ReflectionMemory(reflection_store)
+    personality_stabilizer = PersonalityStabilizer(personality)
+
     # ── NEW: Cognitive routing architecture ───────────────────────────────────
     # CognitionAssessor replaces IntentClassifier.
     # It assesses all four dimensions (intent, reasoning depth,
@@ -103,8 +118,8 @@ def main():
         habit_observer=habit_observer,
         habit_store=habit_store,
         intent_predictor=intent_predictor,
-        execution_router=execution_router,      # NEW: pass router in
-        tool_planner=tool_planner,              # NEW: pass tool planner in
+        execution_router=execution_router,          # NEW: pass router in
+        tool_planner=tool_planner,                  # NEW: pass tool planner in
         model_router=model_router,
         short_term=short_term,
         working_memory=working_memory,
@@ -114,6 +129,11 @@ def main():
         memory_reflection=memory_reflection,
         mood_emotional_memory=mood_emotional_memory,
         habit_reinforcement=habit_reinforcement,
+        behavioral_extractor=behavioral_extractor,  # NEW: behavioral alignment
+        behavioral_memory=behavioral_memory,
+        self_reflector=self_reflector,
+        reflection_memory=reflection_memory,
+        personality_stabilizer=personality_stabilizer,
     )
 
     print("\nNIRA is online. Type 'exit' to quit.\n")

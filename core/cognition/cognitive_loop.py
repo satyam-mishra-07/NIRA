@@ -20,6 +20,11 @@ from memory.short_term.short_term_memory import ShortTermMemory
 from memory.working.working_memory import WorkingMemory
 from personality.personality_engine import PersonalityEngine
 from cognition.habits.reinforcement import HabitReinforcement
+from cognition.behavioral.extractor import BehavioralSignalExtractor
+from cognition.behavioral.memory import BehavioralMemory
+from cognition.reflection.self_reflector import SelfReflectionEngine
+from cognition.reflection.reflection_memory import ReflectionMemory
+from cognition.behavioral.stabilizer import PersonalityStabilizer
 from security.validator import InputValidator
 from security.guardrails import Guardrails
 from config.settings import DEBUG
@@ -45,6 +50,11 @@ class CognitiveLoop:
         habit_reinforcement: HabitReinforcement,
         execution_router: ExecutionRouter | None = None,
         tool_planner: ToolPlanner | None = None,
+        behavioral_extractor: BehavioralSignalExtractor | None = None,
+        behavioral_memory: BehavioralMemory | None = None,
+        self_reflector: SelfReflectionEngine | None = None,
+        reflection_memory: ReflectionMemory | None = None,
+        personality_stabilizer: PersonalityStabilizer | None = None,
     ):
         self.state_manager = state_manager
         self.cognitive_state = cognitive_state
@@ -66,6 +76,16 @@ class CognitiveLoop:
 
         self.execution_router = execution_router
         self.tool_planner = tool_planner
+        self.behavioral_extractor = behavioral_extractor
+        self.behavioral_memory = behavioral_memory
+        self.self_reflector = self_reflector
+        self.reflection_memory = reflection_memory
+        self.personality_stabilizer = personality_stabilizer
+
+        self.last_response: str | None = None
+        self.stabilize_interval = 20
+        self.reflection_interval = 5
+        self.behavioral_decay_interval = 30
 
         self.context_manager = ContextManager(
             cognitive_state, short_term, working_memory, personality
@@ -81,6 +101,9 @@ class CognitiveLoop:
         if not self.state_manager.can_process():
             return
 
+        if self.cognitive_state.interaction_count == 0:
+            self.personality.reset_session()
+
         self.state_manager.transition(RuntimeState.PROCESSING)
         self.cognitive_state.increment_interaction()
 
@@ -95,6 +118,27 @@ class CognitiveLoop:
         context = self.context_manager.build()
         self.working_memory.update_from_input(user_input)
         self.short_term.add_user_message(user_input)
+
+        # ── Phase 0: Deferred behavioral analysis ────────────────────────────────
+        if self.behavioral_extractor is not None and self.behavioral_memory is not None and self.last_response:
+            try:
+                reaction_signal = self.behavioral_extractor.extract(
+                    user_input, self.last_response, context
+                )
+                self.behavioral_memory.update(reaction_signal, context)
+
+                if (
+                    self.personality_stabilizer is not None
+                    and self.cognitive_state.interaction_count % self.stabilize_interval == 0
+                ):
+                    prefs = self.behavioral_memory.get_preferences_for_context(context)
+                    self.personality_stabilizer.apply(prefs)
+            except Exception:
+                if DEBUG:
+                    import traceback
+                    traceback.print_exc()
+
+        # ── End Phase 0 ──────────────────────────────────────────────────────────
 
         mood_result = self.mood_analyzer.analyze(user_input, context)
         self.cognitive_state.update_mood(mood_result)
@@ -182,6 +226,37 @@ class CognitiveLoop:
         response = self.guardrails.filter_response(response)
 
         self.short_term.add_assistant_message(response)
+
+        # ── Phase 12-13: Store response + Self-reflection ────────────────────────
+        self.last_response = response
+
+        if self.self_reflector is not None and self.reflection_memory is not None:
+            try:
+                if self.cognitive_state.interaction_count % self.reflection_interval == 0:
+                    observation = self.self_reflector.reflect(
+                        user_input, response, signal, mood_result, context
+                    )
+                    self.reflection_memory.add_observation(observation)
+
+                    if self.behavioral_memory is not None:
+                        insights = self.reflection_memory.get_insights()
+                        self.behavioral_memory.apply_reflection_insights(insights)
+            except Exception:
+                if DEBUG:
+                    import traceback
+                    traceback.print_exc()
+
+        if (
+            self.behavioral_memory is not None
+            and self.cognitive_state.interaction_count % self.behavioral_decay_interval == 0
+        ):
+            try:
+                self.behavioral_memory.decay()
+            except Exception:
+                if DEBUG:
+                    import traceback
+                    traceback.print_exc()
+        # ── End Phase 12-13 ──────────────────────────────────────────────────────
 
         event_payload = {
             "input": user_input,

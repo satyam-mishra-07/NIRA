@@ -11,6 +11,9 @@ PROFILE_FILE = MEMORY_DIR / "profile" / "user_profile.json"
 HABITS_FILE = MEMORY_DIR / "habits" / "habits.json"
 EMOTIONAL_STATE_FILE = MEMORY_DIR / "emotional" / "emotional_state.json"
 SUMMARIES_FILE = MEMORY_DIR / "summaries" / "summaries.json"
+BEHAVIORAL_MEMORY_FILE = MEMORY_DIR / "behavioral" / "behavioral_memory.json"
+REFLECTION_MEMORY_FILE = MEMORY_DIR / "behavioral" / "reflection_memory.json"
+PERSONALITY_STABILITY_FILE = MEMORY_DIR / "behavioral" / "personality_stability.json"
 
 MAX_RESPONSE_SENTENCES = 4
 MAX_RESPONSE_SENTENCES_DETAILED = 12
