@@ -1,209 +1,5 @@
 [
   {
-    "timestamp": "2026-05-26T15:53:49.909424",
-    "mood": "neutral",
-    "confidence": 0.2,
-    "reason": "no strong signals"
-  },
-  {
-    "timestamp": "2026-05-26T15:54:56.389600",
-    "mood": "neutral",
-    "confidence": 0.2,
-    "reason": "no strong signals"
-  },
-  {
-    "timestamp": "2026-05-26T15:56:13.810241",
-    "mood": "playful",
-    "confidence": 0.9,
-    "reason": "keyword match: playful"
-  },
-  {
-    "timestamp": "2026-05-26T16:01:24.060838",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T16:01:44.322032",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T16:02:20.547471",
-    "mood": "neutral",
-    "confidence": 0.2,
-    "reason": "no strong signals"
-  },
-  {
-    "timestamp": "2026-05-26T16:02:39.844026",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T17:38:17.613627",
-    "mood": "neutral",
-    "confidence": 0.3,
-    "reason": "short message"
-  },
-  {
-    "timestamp": "2026-05-26T17:38:43.418779",
-    "mood": "neutral",
-    "confidence": 0.3,
-    "reason": "short message"
-  },
-  {
-    "timestamp": "2026-05-26T17:38:50.556955",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T20:46:09.291202",
-    "mood": "neutral",
-    "confidence": 0.3,
-    "reason": "short message"
-  },
-  {
-    "timestamp": "2026-05-26T20:46:35.580778",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T20:47:45.465505",
-    "mood": "neutral",
-    "confidence": 0.2,
-    "reason": "no strong signals"
-  },
-  {
-    "timestamp": "2026-05-26T20:48:13.860327",
-    "mood": "frustrated",
-    "confidence": 0.9,
-    "reason": "keyword match: frustrated"
-  },
-  {
-    "timestamp": "2026-05-26T20:48:43.907701",
-    "mood": "curious",
-    "confidence": 0.9,
-    "reason": "keyword match: curious"
-  },
-  {
-    "timestamp": "2026-05-26T20:49:35.504172",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T20:51:05.631646",
-    "mood": "neutral",
-    "confidence": 0.2,
-    "reason": "no strong signals"
-  },
-  {
-    "timestamp": "2026-05-26T20:52:43.819414",
-    "mood": "curious",
-    "confidence": 0.9,
-    "reason": "keyword match: curious"
-  },
-  {
-    "timestamp": "2026-05-26T20:53:30.602054",
-    "mood": "neutral",
-    "confidence": 0.2,
-    "reason": "no strong signals"
-  },
-  {
-    "timestamp": "2026-05-26T20:56:23.651040",
-    "mood": "curious",
-    "confidence": 0.9,
-    "reason": "keyword match: curious"
-  },
-  {
-    "timestamp": "2026-05-26T21:04:06.982230",
-    "mood": "curious",
-    "confidence": 0.9,
-    "reason": "keyword match: curious"
-  },
-  {
-    "timestamp": "2026-05-26T21:05:05.305494",
-    "mood": "curious",
-    "confidence": 0.9,
-    "reason": "keyword match: curious"
-  },
-  {
-    "timestamp": "2026-05-26T21:06:59.872262",
-    "mood": "curious",
-    "confidence": 0.9,
-    "reason": "keyword match: curious"
-  },
-  {
-    "timestamp": "2026-05-26T21:14:38.568296",
-    "mood": "neutral",
-    "confidence": 0.2,
-    "reason": "no strong signals"
-  },
-  {
-    "timestamp": "2026-05-26T21:18:00.119709",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T21:24:29.879886",
-    "mood": "curious",
-    "confidence": 0.9,
-    "reason": "keyword match: curious"
-  },
-  {
-    "timestamp": "2026-05-26T21:25:16.510418",
-    "mood": "neutral",
-    "confidence": 0.2,
-    "reason": "no strong signals"
-  },
-  {
-    "timestamp": "2026-05-26T21:29:06.594608",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T21:29:25.269560",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T21:30:12.079360",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T21:30:35.429673",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T21:31:19.557867",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T21:44:10.997667",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
-    "timestamp": "2026-05-26T21:45:01.489940",
-    "mood": "curious",
-    "confidence": 0.35,
-    "reason": "question detected"
-  },
-  {
     "timestamp": "2026-05-26T21:54:28.496028",
     "mood": "neutral",
     "confidence": 0.2,
@@ -358,5 +154,149 @@
     "mood": "neutral",
     "confidence": 0.3,
     "reason": "short message"
+  },
+  {
+    "timestamp": "2026-05-26T23:37:29.939643",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T23:38:29.415437",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T23:39:26.769040",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-26T23:40:04.479940",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T23:40:55.166244",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T23:41:33.597122",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T23:42:09.542801",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T23:42:59.198014",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T23:43:23.520520",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-26T23:43:55.597552",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-28T23:38:10.867172",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-28T23:38:44.330688",
+    "mood": "neutral",
+    "confidence": 0.3,
+    "reason": "short message"
+  },
+  {
+    "timestamp": "2026-05-28T23:39:54.290396",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-28T23:41:32.604229",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-28T23:42:16.114133",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-29T00:30:30.895800",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-29T00:32:02.849050",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-29T00:33:30.354410",
+    "mood": "curious",
+    "confidence": 0.35,
+    "reason": "question detected"
+  },
+  {
+    "timestamp": "2026-05-29T00:34:01.818229",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-29T00:34:23.296405",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-29T00:35:19.794636",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-29T00:35:47.827645",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-29T00:36:14.241947",
+    "mood": "neutral",
+    "confidence": 0.2,
+    "reason": "no strong signals"
+  },
+  {
+    "timestamp": "2026-05-29T00:36:47.254546",
+    "mood": "tired",
+    "confidence": 0.9,
+    "reason": "keyword match: tired"
   }
 ]

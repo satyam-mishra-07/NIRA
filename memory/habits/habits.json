@@ -1,27 +1,26 @@
 [
   {
     "habit": "coding_assistance",
-    "confidence": 0.0375,
+    "confidence": 0.045,
     "first_observed": null,
     "last_reinforced": "keyword matches: 1"
   },
   {
     "habit": "casual_conversation",
-    "confidence": 0.06,
+    "confidence": 0.075,
     "first_observed": null,
     "last_reinforced": "keyword matches: 1"
   },
   {
     "habit": "music_while_coding",
-    "confidence": 0.0075,
     "confidence": 0.015,
     "first_observed": null,
     "last_reinforced": "keyword matches: 1"
   },
   {
     "habit": "late_night_work",
-    "confidence": 0.144,
+    "confidence": 0.576,
     "first_observed": null,
-    "last_reinforced": "active at 22:00"
+    "last_reinforced": "active at 0:00"
   }
 ]
