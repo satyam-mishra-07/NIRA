@@ -185,7 +185,7 @@ class CognitiveLoop:
             system_prompt = self.personality.build_system_prompt(context)
 
         if tool_context:
-            context = context + f"\n\n{tool_context}"
+            system_prompt += f"\n\nTOOL RESULTS:\n{tool_context}"
 
         try:
             response = model.generate(
